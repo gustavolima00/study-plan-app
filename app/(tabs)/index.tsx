@@ -1,75 +1,113 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { Image } from 'expo-image';
+import { StyleSheet } from 'react-native';
 
 export default function HomeScreen() {
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerBackgroundColor={{ light: '#F8FAFC', dark: '#1E293B' }}
       headerImage={
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+          source={{ uri: 'https://picsum.photos/200/300' }} // Replace with your image
+          style={styles.headerImage}
+          contentFit="cover"
         />
       }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
+      <ThemedView style={styles.container}>
+        {/* Welcome Section */}
+        <ThemedView style={styles.section}>
+          <ThemedText type="title" style={styles.title}>
+            Welcome to Our App
+          </ThemedText>
+          <ThemedText style={styles.subtitle}>
+            The perfect starting point for your mobile experience
+          </ThemedText>
+        </ThemedView>
+
+        {/* Main Content Placeholder */}
+        <ThemedView style={styles.placeholderContainer}>
+          <Image
+            source={{ uri: 'https://picsum.photos/200/300' }}
+            style={styles.placeholderImage}
+            contentFit="contain"
+          />
+          <ThemedText style={styles.placeholderText}>
+            Your content will appear here
+          </ThemedText>
+        </ThemedView>
+
+        {/* CTA Section */}
+        <ThemedView style={styles.ctaContainer}>
+          <ThemedText type="subtitle" style={styles.ctaText}>
+            Ready to get started?
+          </ThemedText>
+          <ThemedText style={styles.ctaSubtext}>
+            Explore the app to discover all features
+          </ThemedText>
+        </ThemedView>
       </ThemedView>
     </ParallaxScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingBottom: 40,
   },
-  stepContainer: {
-    gap: 8,
+  headerImage: {
+    height: 250,
+    width: '100%',
+  },
+  section: {
+    marginBottom: 32,
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: '800',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#64748B',
+    textAlign: 'center',
+  },
+  placeholderContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 40,
+  },
+  placeholderImage: {
+    width: 200,
+    height: 200,
+    opacity: 0.7,
+  },
+  placeholderText: {
+    marginTop: 16,
+    fontSize: 18,
+    color: '#94A3B8',
+    textAlign: 'center',
+  },
+  ctaContainer: {
+    marginTop: 40,
+    backgroundColor: '#F1F5F9',
+    borderRadius: 12,
+    padding: 24,
+    alignItems: 'center',
+  },
+  ctaText: {
+    fontSize: 20,
+    fontWeight: '600',
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  ctaSubtext: {
+    fontSize: 14,
+    color: '#64748B',
+    textAlign: 'center',
   },
 });
