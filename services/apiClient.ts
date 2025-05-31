@@ -5,6 +5,7 @@ import {
   SessionInfo,
   UserInfo
 } from '@/models/auth';
+import { AddStudySessionEventsRequest, FinishStudySessionRequest, SessionEvent, StudySession, UpsertActiveStudySessionRequest } from '@/models/studysession';
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import * as SecureStore from 'expo-secure-store';
 
@@ -108,6 +109,7 @@ class ApiClient {
       if (!authData) {
         return null
       }
+
       if (authData.isTokenValid) {
         return authData.accessToken
       }
@@ -150,6 +152,71 @@ class ApiClient {
       }
     }
     return await this.get<UserInfo>("/auth/user", config);
+  }
+
+  public async startStudySession(request: UpsertActiveStudySessionRequest): Promise<StudySession> {
+    const accessToken = await this.getAccessToken();
+    if (!accessToken) {
+      throw new AuthenticationError("User is not authenticated");
+    }
+
+    return this.post<StudySession>("/study-session/start", request, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+  }
+
+  public async getActiveStudySession(): Promise<StudySession> {
+    const accessToken = await this.getAccessToken();
+    if (!accessToken) {
+      throw new AuthenticationError("User is not authenticated");
+    }
+
+    return this.get<StudySession>("/study-session", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+  }
+
+  public async getActiveStudySessionEvents(): Promise<SessionEvent[]> {
+    const accessToken = await this.getAccessToken();
+    if (!accessToken) {
+      throw new AuthenticationError("User is not authenticated");
+    }
+
+    return this.get<SessionEvent[]>("/study-session/events", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+  }
+
+  public async addStudySessionEvents(request: AddStudySessionEventsRequest): Promise<StudySession> {
+    const accessToken = await this.getAccessToken();
+    if (!accessToken) {
+      throw new AuthenticationError("User is not authenticated");
+    }
+
+    return this.post<StudySession>("/study-session/events", request, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+  }
+
+  public async finishStudySession(request?: FinishStudySessionRequest): Promise<StudySession> {
+    const accessToken = await this.getAccessToken();
+    if (!accessToken) {
+      throw new AuthenticationError("User is not authenticated");
+    }
+
+    return this.post<StudySession>("/study-session/finish", request || {}, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
   }
 }
 

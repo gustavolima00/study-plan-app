@@ -27,7 +27,6 @@ export interface LogoutRequest {
     access_token: string;
 }
 
-
 export interface RefreshTokenRequest {
     refresh_token: string;
 }

@@ -1,3 +1,5 @@
+import Header from '@/components/Header';
+import { ThemedScrollView } from '@/components/ThemedScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { UserFacingError } from '@/errors/UserFacingError';
@@ -7,7 +9,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 export default function ProfileScreen() {
   const [user, setUser] = useState<UserInfo | null>(null);
@@ -65,83 +67,88 @@ export default function ProfileScreen() {
   };
 
   return (
-    <ScrollView >
-      <ThemedView style={{ height: 50 }} />
-      <ThemedView style={styles.profileContainer}>
-        {/* Profile Header */}
-        <ThemedView style={styles.profileHeader}>
-          <Image
-            source={{ uri: 'https://picsum.photos/200/300' }}
-            style={styles.avatar}
-            contentFit="cover"
-            transition={1000}
-          />
-          <ThemedText type="title" style={styles.userName}>
-            {user?.name || user?.preferred_username || 'Usuário'}
-          </ThemedText>
-          <ThemedText style={styles.userEmail}>
-            {user?.email || 'email@exemplo.com'}
-          </ThemedText>
-        </ThemedView>
-
-        {/* User Info Section */}
-        <ThemedView style={styles.section}>
-          <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
-            Informações Pessoais
-          </ThemedText>
-
-          <ThemedView style={styles.infoRow}>
-            <ThemedText style={styles.infoLabel}>Nome completo:</ThemedText>
-            <ThemedText style={styles.infoValue}>
-              {user?.name || 'Não informado'}
+    <View>
+      <Header
+        title={'Account info'}
+      />
+      <ThemedScrollView >
+        <ThemedView style={{ height: 50 }} />
+        <ThemedView style={styles.profileContainer}>
+          {/* Profile Header */}
+          <ThemedView style={styles.profileHeader}>
+            <Image
+              source={{ uri: 'https://picsum.photos/200/300' }}
+              style={styles.avatar}
+              contentFit="cover"
+              transition={1000}
+            />
+            <ThemedText type="title" style={styles.userName}>
+              {user?.name || user?.preferred_username || 'Usuário'}
+            </ThemedText>
+            <ThemedText style={styles.userEmail}>
+              {user?.email || 'email@exemplo.com'}
             </ThemedText>
           </ThemedView>
 
-          <ThemedView style={styles.infoRow}>
-            <ThemedText style={styles.infoLabel}>E-mail:</ThemedText>
-            <ThemedText style={styles.infoValue}>
-              {user?.email || 'Não informado'}
+          {/* User Info Section */}
+          <ThemedView style={styles.section}>
+            <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
+              Informações Pessoais
             </ThemedText>
+
+            <ThemedView style={styles.infoRow}>
+              <ThemedText style={styles.infoLabel}>Nome completo:</ThemedText>
+              <ThemedText style={styles.infoValue}>
+                {user?.name || 'Não informado'}
+              </ThemedText>
+            </ThemedView>
+
+            <ThemedView style={styles.infoRow}>
+              <ThemedText style={styles.infoLabel}>E-mail:</ThemedText>
+              <ThemedText style={styles.infoValue}>
+                {user?.email || 'Não informado'}
+              </ThemedText>
+            </ThemedView>
+
+            <ThemedView style={styles.infoRow}>
+              <ThemedText style={styles.infoLabel}>E-mail verificado:</ThemedText>
+              <ThemedText style={styles.infoValue}>
+                {user?.email_verified ? 'Sim' : 'Não'}
+              </ThemedText>
+            </ThemedView>
           </ThemedView>
 
-          <ThemedView style={styles.infoRow}>
-            <ThemedText style={styles.infoLabel}>E-mail verificado:</ThemedText>
-            <ThemedText style={styles.infoValue}>
-              {user?.email_verified ? 'Sim' : 'Não'}
+          {/* Settings Section */}
+          <ThemedView style={styles.section}>
+            <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
+              Configurações
             </ThemedText>
+
+            <TouchableOpacity style={styles.settingItem}>
+              <MaterialIcons name="security" size={24} color="#808080" />
+              <ThemedText style={styles.settingText}>Privacidade e Segurança</ThemedText>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.settingItem}>
+              <MaterialIcons name="help" size={24} color="#808080" />
+              <ThemedText style={styles.settingText}>Ajuda e Suporte</ThemedText>
+            </TouchableOpacity>
           </ThemedView>
-        </ThemedView>
 
-        {/* Settings Section */}
-        <ThemedView style={styles.section}>
-          <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
-            Configurações
-          </ThemedText>
-
-          <TouchableOpacity style={styles.settingItem}>
-            <MaterialIcons name="security" size={24} color="#808080" />
-            <ThemedText style={styles.settingText}>Privacidade e Segurança</ThemedText>
+          {/* Logout Button */}
+          <TouchableOpacity
+            style={styles.logoutButton}
+            onPress={handleLogout}
+            disabled={isLoading}
+          >
+            <MaterialIcons name="logout" size={24} color="#fff" />
+            <ThemedText style={styles.logoutButtonText}>
+              {isLoading ? 'Saindo...' : 'Sair da Conta'}
+            </ThemedText>
           </TouchableOpacity>
-
-          <TouchableOpacity style={styles.settingItem}>
-            <MaterialIcons name="help" size={24} color="#808080" />
-            <ThemedText style={styles.settingText}>Ajuda e Suporte</ThemedText>
-          </TouchableOpacity>
         </ThemedView>
-
-        {/* Logout Button */}
-        <TouchableOpacity
-          style={styles.logoutButton}
-          onPress={handleLogout}
-          disabled={isLoading}
-        >
-          <MaterialIcons name="logout" size={24} color="#fff" />
-          <ThemedText style={styles.logoutButtonText}>
-            {isLoading ? 'Saindo...' : 'Sair da Conta'}
-          </ThemedText>
-        </TouchableOpacity>
-      </ThemedView>
-    </ScrollView>
+      </ThemedScrollView>
+    </View>
   );
 }
 
